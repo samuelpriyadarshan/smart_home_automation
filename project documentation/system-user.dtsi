@@ -1,0 +1,23 @@
+/include/ "system-conf.dtsi"
+/ {
+    chosen {
+        bootargs = "console=ttyPS0,115200 earlyprintk uio_pdrv_genirq.of_id=generic-uio";
+    };
+};
+
+&myip_0 {
+    compatible = "generic-uio";
+};
+
+&xadc_wiz_0 {
+  interrupts = <0 53 4>;
+  interrupt-parent = <0x1>;
+  clocks = <&clkc 15>;
+  xlnx,channels {
+    #address-cells = <1>;
+	#size-cells = <0>;
+	channelJA2@8 {
+	  reg = <8>;
+	};
+  };
+};

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>SMART HOME APPLICATIONS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="static/css/mystyle.css">
+		<script>
+			window.onload = function () {
+			
+			var dps = []; // dataPoints
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title :{
+					text: "Temperature"
+				},
+				data: [{
+					type: "line",
+					xValueType: "dateTime",
+					xValueFormatString: "hh:mm:ss TT",
+					showInLegend: true,
+					dataPoints: dps
+				}]
+			});
+			
+			var xVal = 0;
+			var time = new Date;
+// starting at 9.30 am
+			time.setHours(9);
+			time.setMinutes(30);
+			time.setSeconds(00);
+			time.setMilliseconds(00);
+			var yVal = 0 ;
+			var updateInterval = 500;
+			var dataLength = 50; // number of dataPoints visible at any point
+			
+			var updateChart = function (count) {
+			
+				count = count || 1;
+			
+				for (var j = 0; j < count; j++) {
+					time.setTime(time.getTime()+ updateInterval);
+					yVal = document.getElementById("output").value ;
+					dps.push({
+						x: time.getTime(),
+						y: yVal
+					});
+					
+				}
+			
+				if (dps.length > dataLength) {
+					dps.shift();
+				}
+			
+				chart.render();
+			};
+			
+			updateChart(dataLength);
+			setInterval(function(){updateChart()}, updateInterval);
+			
+			}
+			</script>
+	</head>
+	<body>
+		<main class="container">
+			<h1>SMART HOME APPLICATIONS</h1>
+			<div class="row">
+				<div class="col-sm-4">
+					<h3>REMOTE CONTROL</h3>
+					<button type="button" class="btn btn-primary" id="button-led0" name="button-led0" onClick="pressButton(id)">LIGHT</button>
+					<button type="button" class="btn btn-primary" id="button-led1" name="button-led1" onClick="pressButton(id)">FAN</button>
+					<button type="button" class="btn btn-primary" id="button-led2" name="button-led2" onClick="pressButton(id)">AC</button>
+					<button type="button" class="btn btn-primary" id="button-led3" name="button-led3" onClick="pressButton(id)">HEATER</button>
+					<button type="button" class="btn btn-primary" id="button-led4" name="button-led4" onClick="pressButton(id)">LOCK</button>
+				</div>
+			
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<h3>SENSORS</h3>
+					<button type="button" class="btn btn-primary" id="button-btn0" name="button-btn0">MQ-6</button>
+					<button type="button" class="btn btn-primary" id="button-btn1" name="button-btn1">SENSOR-2</button>
+					<button type="button" class="btn btn-primary" id="button-btn2" name="button-btn2">SENSOR-3</button>
+					<button type="button" class="btn btn-primary" id="button-btn3" name="button-btn3">SENSOR-3</button>
+				</div>
+				<div class="col-sm-6">
+					<h3>APPLICATIONS</h3>
+					<button type="button" class="btn btn-primary" id="button-sw0" name="button-sw0">TV</button>
+					<button type="button" class="btn btn-primary" id="button-sw1" name="button-sw1">LIGHT</button>
+					<button type="button" class="btn btn-primary" id="button-sw2" name="button-sw2">FAN</button>
+					<button type="button" class="btn btn-primary" id="button-sw3" name="button-sw3">WASHING MACHINE</button>
+				</div>
+			</div>
+
+			<div>
+				<div class="row">
+					<div class="col-sm-5">
+						<!-- Data from LM-35 connected to XADC port of Zybo-->
+						<h3>TEMPERATURE</h3>
+						<p id="output"> </p>
+					</div>
+					
+				</div>
+			</div>
+
+			<br>
+			<br>
+			<div id="chartContainer" style="height: 370px; width:100%;"></div>
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		</main>
+		
+		<!-- load script files -->
+		<script type="text/javascript" src="static/js/init.js" charset="utf-8"></script>
+		<script type="text/javascript" src="static/js/main.js" charset="utf-8"></script>
+	</body>
+</html>
